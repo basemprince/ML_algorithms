@@ -48,17 +48,39 @@ def assignment5(t,data,test):
 
 def assignment7(t,data,test):
     #prune MONK1
-    classError1= []
-    classError3= []
+    classError1B= []
+    classError3B= []
+    classError1A= []
+    classError3A= []
     for fraction in fractions:
-        #prunning and getting class error for MONK1 set
-        classError1.append(prune(t[0],data[0],test[0],fraction,1))
-        classError3.append(prune(t[0],data[0],test[0],fraction,3))
-    plt.plot(fractions,classError1)
+        #prunning and getting class error for MONK1 set   
+        errorB,errorA=prune(t[0],data[0],test[0],fraction,1)
+        classError1B.append(errorB)
+        classError1A.append(errorA)
+        errorB,errorA=prune(t[2],data[2],test[2],fraction,3)
+        classError3B.append(errorB)
+        classError3A.append(errorA)
+    plt.style.use('ggplot')
+    fig1= plt.figure(1,figsize=(20,4.8))
+    MONK1 = fig1.add_subplot(121)
+    MONK3 = fig1.add_subplot(122)
+    MONK1.plot(fractions,classError1B,marker='o',label='Before Pruning')
+    MONK1.plot(fractions,classError1A,marker='o',label='After Pruning')
+    MONK1.set_title('MONK1 - Classification Error Vs Fraction')
+    MONK1.set(xlabel='Fractions', ylabel='Classification Error')
+    MONK1.legend()
+    MONK3.plot(fractions,classError3B,color= 'red',marker='o',label='Before Pruning')
+    MONK3.plot(fractions,classError3A,color= 'black',marker='o',label='After Pruning')
+    MONK3.set_title('MONK3 - Classification Error Vs Fraction')
+    MONK3.set(xlabel='Fractions', ylabel='Classification Error')
+    MONK3.legend()
+    plt.savefig('plot.png')
     plt.show()
-def prune(t,data,test,fraction,monk):
-    errorArray = []
 
+    
+def prune(t,data,test,fraction,monk):
+    errorArrayA = []
+    errorArrayB = []
     for iteration in range (iterations):
         sys.stdout.write('\r')
         # the exact output you're looking for:
@@ -67,6 +89,8 @@ def prune(t,data,test,fraction,monk):
         resultBuffer = 0
         ttrain,tvalidate= partition(data,fraction)
         newTree = tree.buildTree(ttrain, m.attributes)
+        errorB = 1-tree.check(newTree,test)
+        errorArrayB.append(errorB)
         newPrunedTrees = tree.allPruned(newTree)
         for newPrunedTree in newPrunedTrees:
             #Check performance on validation dataset
@@ -74,15 +98,16 @@ def prune(t,data,test,fraction,monk):
             if checkResult > resultBuffer:
                 resultBuffer = checkResult
                 bestTree = newPrunedTree
-        error = 1-tree.check(bestTree,test)
-        errorArray.append(error)
+        errorA = 1-tree.check(bestTree,test)
+        errorArrayA.append(errorA)
     sys.stdout.write('\n')
-    return np.mean(errorArray)
+    return np.mean(errorArrayB),np.mean(errorArrayA)
 
 def main():
     t = [tree.buildTree(m.monk1, m.attributes),tree.buildTree(m.monk2, m.attributes),tree.buildTree(m.monk3, m.attributes)]
     data = [m.monk1,m.monk2,m.monk3]
     test = [m.monk1test,m.monk2test,m.monk3test]
+    
     #assignment1()
     #assignment3()
     #assignment5(t,data,test)
