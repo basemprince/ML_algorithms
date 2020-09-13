@@ -38,13 +38,14 @@ def assignment3():
     print(tabulate([monk1, monk2,monk3], headers=['Dataset', 'a1','a2','a3','a4','a5','a6'], tablefmt='orgtbl'))
 
 def assignment5(t,data,test):
+    #check calculates the accuracy, 1-accuracy to get the error
     monk1 = ['MONK1',1-tree.check(t[0], data[0]),round(1-tree.check(t[0], test[0]),4)]
     monk2 = ['MONK2',1-tree.check(t[1], data[1]),round(1-tree.check(t[1], test[1]),4)]
     monk3 = ['MONK3',1-tree.check(t[2], data[2]),round(1-tree.check(t[2], test[2]),4)]
     print(tabulate([monk1, monk2,monk3], headers=['Dataset', 'Error-train','Error-test'], tablefmt='orgtbl'),'\n')
     #draw.drawTree(t[0])
     #draw.drawTree(t[1])
-    #draw.drawTree(t[2])
+    draw.drawTree(t[2])
 
 def assignment7(t,data,test):
     #prune MONK
@@ -61,9 +62,9 @@ def assignment7(t,data,test):
         classError3B.append(errorB)
         classError3A.append(errorA)
     plt.style.use('ggplot')
-    fig1= plt.figure(1,figsize=(20,4.8))
-    MONK1 = fig1.add_subplot(121)
-    MONK3 = fig1.add_subplot(122)
+    fig1= plt.figure(1,figsize=(10,15))
+    MONK1 = fig1.add_subplot(211)
+    MONK3 = fig1.add_subplot(212)
     MONK1.plot(fractions,classError1B,marker='o',label='Before Pruning')
     MONK1.plot(fractions,classError1A,marker='o',label='After Pruning')
     MONK1.set_title('MONK1 - Classification Error Vs Fraction')
