@@ -5,9 +5,12 @@ import drawtree_qt5 as draw
 from tabulate import tabulate
 import random
 import numpy as np
+import matplotlib.pyplot as plt
+from time import sleep
+import sys
 
 iterations = 200
-fraction = [0.3,0.4,0.5,0.6,0.7,0.8]
+fractions = [0.3,0.4,0.5,0.6,0.7,0.8]
 
 def partition(data, fraction):
 	ldata = list(data)
@@ -45,26 +48,36 @@ def assignment5(t,data,test):
 
 def assignment7(t,data,test):
     #prune MONK1
-    prune(t[0],data[0],test[0])
-
-def prune(t,data,test):
+    classError1= []
+    classError3= []
+    for fraction in fractions:
+        #prunning and getting class error for MONK1 set
+        classError1.append(prune(t[0],data[0],test[0],fraction,1))
+        classError3.append(prune(t[0],data[0],test[0],fraction,3))
+    plt.plot(fractions,classError1)
+    plt.show()
+def prune(t,data,test,fraction,monk):
     errorArray = []
+
     for iteration in range (iterations):
+        sys.stdout.write('\r')
+        # the exact output you're looking for:
+        sys.stdout.write("Pruning MONK-%d with partition %.2f: iteration %d out of %d" % (monk,fraction,iteration, iterations))
+        sys.stdout.flush()
         resultBuffer = 0
-        ttrain,tvalidate= partition(data,fraction[0])
+        ttrain,tvalidate= partition(data,fraction)
         newTree = tree.buildTree(ttrain, m.attributes)
         newPrunedTrees = tree.allPruned(newTree)
         for newPrunedTree in newPrunedTrees:
             #Check performance on validation dataset
             checkResult=tree.check(newPrunedTree, tvalidate)
-            
             if checkResult > resultBuffer:
                 resultBuffer = checkResult
                 bestTree = newPrunedTree
-
-		error = 1-tree.check(bestTree, test)
-		errorArray.append(error)
-    return np.mean(errorArray), np.var(errorArray)
+        error = 1-tree.check(bestTree,test)
+        errorArray.append(error)
+    sys.stdout.write('\n')
+    return np.mean(errorArray)
 
 def main():
     t = [tree.buildTree(m.monk1, m.attributes),tree.buildTree(m.monk2, m.attributes),tree.buildTree(m.monk3, m.attributes)]
@@ -72,7 +85,7 @@ def main():
     test = [m.monk1test,m.monk2test,m.monk3test]
     #assignment1()
     #assignment3()
-    assignment5(t,data,test)
+    #assignment5(t,data,test)
     assignment7(t,data,test)
 
 main()
