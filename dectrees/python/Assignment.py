@@ -42,12 +42,12 @@ def assignment5(t,data,test):
     monk2 = ['MONK2',1-tree.check(t[1], data[1]),round(1-tree.check(t[1], test[1]),4)]
     monk3 = ['MONK3',1-tree.check(t[2], data[2]),round(1-tree.check(t[2], test[2]),4)]
     print(tabulate([monk1, monk2,monk3], headers=['Dataset', 'Error-train','Error-test'], tablefmt='orgtbl'),'\n')
-    draw.drawTree(t[0])
-    draw.drawTree(t[1])
-    draw.drawTree(t[2])
+    #draw.drawTree(t[0])
+    #draw.drawTree(t[1])
+    #draw.drawTree(t[2])
 
 def assignment7(t,data,test):
-    #prune MONK1
+    #prune MONK
     classError1B= []
     classError3B= []
     classError1A= []
@@ -83,7 +83,6 @@ def prune(t,data,test,fraction,monk):
     errorArrayB = []
     for iteration in range (iterations):
         sys.stdout.write('\r')
-        # the exact output you're looking for:
         sys.stdout.write("Pruning MONK-%d with partition %.2f: iteration %d out of %d" % (monk,fraction,iteration, iterations))
         sys.stdout.flush()
         resultBuffer = 0
@@ -107,10 +106,9 @@ def main():
     t = [tree.buildTree(m.monk1, m.attributes),tree.buildTree(m.monk2, m.attributes),tree.buildTree(m.monk3, m.attributes)]
     data = [m.monk1,m.monk2,m.monk3]
     test = [m.monk1test,m.monk2test,m.monk3test]
-    
-    #assignment1()
-    #assignment3()
-    #assignment5(t,data,test)
+    assignment1()
+    assignment3()
+    assignment5(t,data,test)
     assignment7(t,data,test)
 
 main()
