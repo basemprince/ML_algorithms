@@ -1,4 +1,4 @@
 # DD2421
 
-Lab1: dtrees
-Lab2: svm
+<b>Lab1: </b> dtrees <d>
+<b>Lab2: </b> svm
