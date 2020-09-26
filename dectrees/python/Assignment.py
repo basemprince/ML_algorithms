@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from time import sleep
 import sys
 
-iterations = 200
+iterations = 1000
 fractions = [0.3,0.4,0.5,0.6,0.7,0.8]
 
 def partition(data, fraction):
@@ -45,7 +45,7 @@ def assignment5(t,data,test):
     print(tabulate([monk1, monk2,monk3], headers=['Dataset', 'Error-train','Error-test'], tablefmt='orgtbl'),'\n')
     #draw.drawTree(t[0])
     #draw.drawTree(t[1])
-    draw.drawTree(t[2])
+    #draw.drawTree(t[2])
 
 def assignment7(t,data,test):
     #prune MONK
@@ -107,9 +107,9 @@ def main():
     t = [tree.buildTree(m.monk1, m.attributes),tree.buildTree(m.monk2, m.attributes),tree.buildTree(m.monk3, m.attributes)]
     data = [m.monk1,m.monk2,m.monk3]
     test = [m.monk1test,m.monk2test,m.monk3test]
-    assignment1()
-    assignment3()
-    assignment5(t,data,test)
-    assignment7(t,data,test)
+    #assignment1()
+    #assignment3()
+    #assignment5(t,data,test)
+    #assignment7(t,data,test)
 
 main()

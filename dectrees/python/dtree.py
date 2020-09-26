@@ -15,8 +15,10 @@ def entropy(dataset):
 def averageGain(dataset, attribute):
     "Calculate the expected information gain when an attribute becomes known"
     weighted = 0.0
+    #print (dataset , attribute)
     for v in attribute.values:
         subset = select(dataset, attribute, v)
+        #print("when", attribute ,"is equatl to ", v, " entropy is " , entropy(subset), " and entropy of dataset is", entropy(dataset))
         weighted += entropy(subset) * len(subset)
     return entropy(dataset) - weighted/len(dataset)
 
